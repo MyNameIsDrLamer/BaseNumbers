@@ -1,0 +1,31 @@
+{% extends 'base/base.html' %}
+{% block content %}
+{% csrf_token %}
+<!-- datepicker -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/media/static/autocomplete/css/style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script>
+  $( function() {
+    $( "#datepicker" ).datepicker({
+      dateFormat: "dd/mm/yy",
+      dayNamesMin: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+      dayNames: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"],
+      monthNames: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь",
+        "Ноябрь", "Декабрь"]
+    });
+  });
+</script>
+<br>
+<h2>Редактирование номера</h2>
+<br>
+<div class="main">
+  <form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <br>
+    <button type="submit" class="btn btn-primary" formenctype="multipart/form-data">Сохранить</button>
+  </form>
+</div>
+{% endblock %}

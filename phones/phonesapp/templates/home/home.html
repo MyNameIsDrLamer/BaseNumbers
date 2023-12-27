@@ -1,0 +1,135 @@
+{% extends 'base/base.html' %}
+{% block content %}
+{% csrf_token %}
+{% load poll_extras %}
+<link rel="stylesheet" href="media/static/autocomplete/css/style.css" xmlns="http://www.w3.org/1999/html">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
+<link href="/media/static/tablesort/css/sortable.min.css" rel="stylesheet">
+<script src="/media/static/tablesort/js/sortable.min.js"></script>
+
+<br>
+<h2>
+    Список номеров
+</h2>
+<br>
+Общее количество номеров: {{ numbers_sum }}<br>
+Номеров ЦФ: {{ numbers_cf }}<br>
+Неактивных номеров: {{ numbers_hide }}<br>
+<br>
+<div class="card" style="width: 900px;"><h5
+        class="card-header">Поиск по номерам:</h5>
+    <div class="card-body">
+        <h6 class="card-subtitle mb-2 text-muted">Введите один или несколько параметров:</h6>
+        <div class="d-flex">
+            <form method="get">
+                <div class="row">
+                    <div class="col">
+                        <input class="form-control"
+                               type="number"
+                               name="id"
+                               id="id_id"
+                               placeholder="ID"
+                               aria-label="default input example">
+                    </div>
+                    <div class="col">
+                        <input class="form-control"
+                               type="number"
+                               name="number"
+                               id="id_number"
+                               style="width: 180px;"
+                               placeholder="Номер телефона"
+                               aria-label="default input example">
+                    </div>
+                    <div class="col">
+                        <select name="attachment"
+                                class="form-select"
+                                style="width: 280px;"
+                                id="id_attachment">
+                            <option value="" selected="">---Прикрепление---</option>
+                            {% for item in attachment %}
+                                <option value="{{ item.id }}">{{ item.attachment }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label for="id_cf" class="form-label">ЦФ</label>
+                        <input type="checkbox"
+                               name="cf"
+                               id="id_сf">
+                        <script>
+                            $('#id_сf').change(function(){
+                                $(this).val('true');
+                            });
+                        </script>
+                    </div>
+                    <div class="col mx-3">
+                        <button class="btn btn-primary" type="submit">Поиск</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<br>
+<!---------Таблица начало---------->
+<!--<table id="MyTable" class="table table-bordered">-->
+{% if request.user|has_group:"admins" %}
+<table id="MyTable" class="table sortable table-bordered" style="border-color: black; width: 100%">
+    <thead>
+    <!---------Заголовки----------->
+    <tr>
+        <th>ID</th>
+        <th>Номер</th>
+        <th>Прикрепление</th>
+        <th>Дата прикрепления</th>
+        <th>Комментарий</th>
+        <th>ЦФ</th>
+    </tr>
+    </thead>
+    <!----------------------------->
+    <!-----------Ячейки таблицы---->
+    <tbody>
+    {% for item in page_obj %}
+    <tr>
+        <td><a href="{{ item.id }}/edit">{{ item.id }}</a></td>
+        <td>{{ item.number }}</td>
+        <td>{{ item.attachment.attachment }}</td>
+        <td>{{ item.date_attach }}</td>
+        <td>{{ item.comment }}</td>
+        <td>{{ item.cf|yesno:"ЦФ, " }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<table id="MyTable" class="table sortable table-bordered" style="border-color: black; width: 100%">
+    <thead>
+    <!---------Заголовки----------->
+    <tr>
+        <th>Номер</th>
+        <th>Прикрепление</th>
+        <th>Дата прикрепления</th>
+        <th>Комментарий</th>
+        <th>ЦФ</th>
+    </tr>
+    </thead>
+    <!----------------------------->
+    <!-----------Ячейки таблицы---->
+    <tbody>
+    {% for item in page_obj %}
+    <tr>
+        <td>{{ item.number }}</td>
+        <td>{{ item.attachment.attachment }}</td>
+        <td>{{ item.date_attach }}</td>
+        <td>{{ item.comment }}</td>
+        <td>{{ item.cf|yesno:"ЦФ, " }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+<br>
+{% include 'home/pagination.html' %}
+<br>
+{% endblock %}

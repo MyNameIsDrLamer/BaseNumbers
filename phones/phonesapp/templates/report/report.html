@@ -1,0 +1,74 @@
+{% extends 'base/base.html' %}
+{% block content %}
+{% csrf_token %}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script>
+  $( function() {
+    $( "#id_start_date" ).datepicker({
+      dateFormat:'dd/mm/yy',
+    });
+});
+</script>
+<script>
+  $( function() {
+    $( "#id_end_date" ).datepicker({
+      dateFormat:'dd/mm/yy',
+    });
+});
+</script>
+<div class="mx-3">
+    {% csrf_token %}
+    <br>
+    <h2>Создание отчетов в Excel</h2>
+    <br>
+    <h6 style="color: #808080;">Введите один или несколько параметров:</h6>
+    <br>
+    <form method="get">
+        <p>
+            <label for="id_attachment">Отделение:</label>
+            <select name="attachment"
+                    id="id_attachment"
+                    class="form-select"
+                    style="width: 400px;">
+                <option value="" selected="">---Список---</option>
+                {% for item in attachments %}
+                    <option value="{{ item.id }}">{{ item.attachment }}</option>
+                {% endfor %}
+            </select>
+        </p>
+        <p>
+            <label for="id_start_date">С даты:</label>
+            <input type="text"
+                   name="start_date"
+                   id="id_start_date"
+                   class="form-control"
+                   autocomplete="off"
+                   maxlength="20"
+                   style="width: 200px;"
+                   placeholder="Выберите дату, время">
+        </p>
+        <p>
+            <label for="id_end_date">По дату:</label>
+            <input type="text"
+                   name="end_date"
+                   id="id_end_date"
+                   class="form-control"
+                   autocomplete="off"
+                   maxlength="20"
+                   style="width: 200px;"
+                   placeholder="Выберите дату, время">
+        </p>
+        <br>
+        <p>
+            <form>
+                <button type="submit" class="btn btn-primary" formaction="{% url 'export_excel' %}">Создать
+                    отчет
+                </button>
+            </form>
+        </p>
+    </form>
+</div>
+{% endblock %}

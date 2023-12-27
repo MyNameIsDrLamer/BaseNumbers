@@ -1,0 +1,41 @@
+{% extends 'base/base.html' %}
+{% block content %}
+{% csrf_token %}
+{% for item in temp %}
+{% if alert_flag %}
+<script>
+    alert("Номер: " + {{item}} + " не числился в базе 'Номера'. Не формируйте отчет, пока не будут внесены соответствующие изменения к этому номеру.");
+</script>
+{% endif %}
+{% endfor %}
+<div class="main">
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <br>
+        <h4>Загрузка файлов для Ростелекома</h4>
+        <br>
+        <p>
+            <label for="{{ form.file.id_form_label }}">Загрузка файла:</label>
+            <input type="file"
+                   class="form-control"
+                   style="width: 500px;"
+                   name="file"
+                   id="{{ form.file.id_form_label }}">
+        </p>
+        <p>
+            <label for="id_provider">Поставщик услуг:</label>
+            <select name="provider"
+                    class="form-control"
+                    style="width: 250px;"
+                    required
+                    id="id_provider">
+                <option value="{{ providers.id }}">{{ providers.provider }}</option>
+            </select>
+        </p>
+
+        <button type="submit" class="btn btn-primary" formenctype="multipart/form-data">
+            Добавить
+        </button>
+    </form>
+</div>
+{% endblock %}

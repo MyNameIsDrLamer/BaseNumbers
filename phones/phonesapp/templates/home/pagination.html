@@ -1,0 +1,45 @@
+{% load poll_extras %}
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        {% if paginator_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="{% my_url 1 'page' request.GET.urlencode %}">&laquo;</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="{% my_url paginator_obj.previous_page_number 'page' request.GET.urlencode %}">&lt;</a>
+        </li>
+        {% endif %}
+
+        {% if paginator_obj.number|add:'-4' > 1 %}
+        <li class="page-item">
+            <a class="page-link" href="{% my_url paginator_obj.number|add:'-5' 'page' request.GET.urlencode %}">&hellip;</a>
+        </li>
+        {% endif %}
+
+        {% for i in paginator_obj.paginator.page_range %}
+        {% if paginator_obj.number == i %}
+        <li class="page-item active" aria-current="page">
+            <span class="page-link">{{ i }}/{{ paginator_obj.paginator.num_pages}}
+              <span class="sr-only"></span>
+            </span>
+        </li>
+
+        {% elif i > paginator_obj.number|add:'-5' and i < paginator_obj.number|add:'5' %}
+        <li class="page-item"><a class="page-link" href="{% my_url i 'page' request.GET.urlencode %}">{{ i }}</a></li>
+        {% endif %}
+        {% endfor %}
+
+        {% if paginator_obj.paginator.num_pages > paginator_obj.number|add:'4' %}
+        <li class="page-item"><a class="page-link" href="{% my_url paginator_obj.number|add:'5' 'page' request.GET.urlencode %}">&hellip;</a></li>
+        {% endif %}
+
+        {% if paginator_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="{% my_url paginator_obj.next_page_number 'page' request.GET.urlencode %}">&gt;</a>
+        </li>
+        <li class="page-item">
+            <a class='page-link' href="{% my_url paginator_obj.paginator.num_pages 'page' request.GET.urlencode %}"> &raquo;</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
