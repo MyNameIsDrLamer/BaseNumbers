@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-ybnzs+s5cde!r%5m1at)iegka_ey8$b4^84!hs84yd5g8uq9=%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.9.229', '212.192.125.112']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -69,7 +69,7 @@ WSGI_APPLICATION = 'phones.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'new_numbers',
+        'NAME': 'numbers',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': 'localhost',
